@@ -9,6 +9,9 @@
 
 void initialize_cards(int* cards)
 {
+	// 카드 분배에 필요한 커서를 0으로 초기화
+	distribution_cursor = 0;
+
 	int i, j, index = 0, determine_type;
 
 	// (11 = 'J', 12 = 'Q', 13 = 'K' -> 모두 10으로 해석)
@@ -34,7 +37,7 @@ void initialize_cards(int* cards)
 	}
 
 	randomize_cards(cards);
-	printf("----> %d개 카드 세트를 섞어서 트레이에 넣었습니다.\n", N_SET);
+	printf("\n----> %d개 카드 세트를 섞어서 트레이에 넣었습니다.\n", N_SET);
 }
 
 void randomize_cards(int* cards)

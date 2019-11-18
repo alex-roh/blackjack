@@ -7,13 +7,20 @@
 #include "Header.h"
 #include "Constants.h"
 
-void cards_to_string(int* player_cards, char* player_cards_string, int size)
+void cards_to_string(int* player_cards, char* player_cards_string, int size, int dealer_first_turn_flag)
 {
 	int value = 0;
 
 	for (int i = 0; i < size; i++)
 	{
 		char temp[MINLENGTH] = "";
+
+		if (i == 0 && dealer_first_turn_flag == DEALER)
+		{
+			strcat(player_cards_string, "(알수없음) ");
+			continue;
+		}
+
 		value = *(player_cards + i);
 		define_card_type(temp, value);
 		strcat(player_cards_string, temp);

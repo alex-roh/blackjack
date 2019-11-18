@@ -5,12 +5,12 @@
 #include "Header.h"
 #include "Constants.h"
 
-int player_number = 0;
-int cards_tray[N_TOTAL_CARDS];
-
 int main()
 {
+	set_players(&player_number);
 	initialize_cards(cards_tray);
+	game_logic_per_round();
+
 	return 0;
 }
 
