@@ -20,3 +20,4 @@
 #define DEAD -1
 
 #define MAXLENGTH 100
+#define MINLENGTH 40

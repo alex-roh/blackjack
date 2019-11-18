@@ -37,7 +37,7 @@ void game_logic_per_round()
 	// 유저의 턴 및 다른 플레이어들의 턴
 	int result = 0;
 	printf("\n---------게임 시작--------\n\n");
-
+	
 	for (int i = 0; i < player_number; i++)
 	{
 		select_go_stop(i, &result);
@@ -49,18 +49,15 @@ void game_logic_per_round()
 		}
 	}
 
-	// 블랙잭이 턴 도중에 나온 경우
-	if (result == BLACKJACK)
+	// 턴 중에 블랙잭이 나오지 않은 경우
+	if (result != BLACKJACK)
 	{
-		// 결과 확인
-		end_round(result, players_bet);
+		select_go_stop(DEALER, &result); // 딜러의 턴
 	}
-	// 일반적인 종료 상황의 경우
-	else {
-		select_go_stop(DEALER, result);	 // 딜러의 턴
-		end_round(result, players_bet);	 // 라운드를 종료함
-	}
-
+		
+	// 이번 라운드 결과 정산
+	end_round(result, players_bet);
+	
 	round++;
 }
 
@@ -73,7 +70,7 @@ void select_go_stop(int i, int* result)
 	}
 	else if (i == DEALER) // 딜러의 경우
 	{
-		*result = selection(&dealer, PLAYER); // 이제 첫 번째 카드를 숨기지 않아도 되므로
+		*result = selection(&dealer, 1); // 이제 첫 번째 카드를 숨기지 않아도 되므로
 											  // 인자를 'DEALER'가 아닌 'PLAYER'로 넣음
 	}
 	else // 다른 플레이어들의 경우
@@ -138,7 +135,14 @@ int selection(player* player_ptr, int i)
 			else
 			{
 				// 트레이로부터 새로 카드 한 장을 받아옴
-				distribute_cards(PLAYER, i);
+				if (player_ptr == &dealer) // 서버의 경우
+				{
+					distribute_cards(DEALER, DEALER);
+				}
+				else 
+				{
+					distribute_cards(PLAYER, i);
+				}
 				printf("  --> 트레이로부터 새로운 카드를 받아옵니다.\n");
 			}
 		}

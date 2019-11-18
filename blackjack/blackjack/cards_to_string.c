@@ -7,7 +7,7 @@
 #include "Header.h"
 #include "Constants.h"
 
-void cards_to_string(int* player_cards, char* player_cards_string, int size, int dealer_first_turn_flag)
+void cards_to_string(int* player_cards, char* player_cards_string, int size, int dealer_hide_flag)
 {
 	int value = 0;
 
@@ -15,7 +15,7 @@ void cards_to_string(int* player_cards, char* player_cards_string, int size, int
 	{
 		char temp[MINLENGTH] = "";
 
-		if (i == 0 && dealer_first_turn_flag == DEALER)
+		if (i == 0 && dealer_hide_flag == DEALER)
 		{
 			strcat(player_cards_string, "(알수없음) ");
 			continue;
