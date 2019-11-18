@@ -4,19 +4,34 @@
 #include <string.h> 
 #include "header.h"
 
-#define N_CARDS 52
+#define N_SET 4
+#define N_CARDS_PER_SET 52
+#define N_TOTAL_CARDS 208
 #define N_TYPE 4
 #define N_CARDS_PER_TYPE 13
-#define MAXLENGTH 30
+#define MAXLENGTH 100
+#define MINLENGTH 30
 
 int player_number = 0;
-char card_name[MAXLENGTH];
 
-int main() 
+int main()
 {
-	printf("%s", get_card_type(413));
+	int card_tray[5] = { 112, 203, 401, 311, 110 };
+	printf("%s\n", get_player_cards(card_tray, 5));
 
 	return 0;
+}
+
+char* get_player_cards(int* player_cards, int size)
+{
+	char player_cards_string[MAXLENGTH] = "";
+
+	for (int i = 0; i < size; i++)
+	{
+		strcat(player_cards_string, get_card_type(*(player_cards + i)));
+	}
+
+	return player_cards_string;
 }
 
 void get_player_number(int* player_number) 
@@ -35,26 +50,32 @@ void initialize_cards(int* cards)
 	// 301-313 : 스페이드
 	// 401-413 : 클로버
 
-	for (i = 1; i <= N_TYPE; i++) 
-	{
-		determine_type = i * 100;
+	int count = N_SET;
 
-		for (j = 1; j <= N_CARDS_PER_TYPE; j++) 
+	while (count > 0) {
+		for (i = 1; i <= N_TYPE; i++)
 		{
-			*(cards + index) = determine_type + j;
-			index++;
+			determine_type = i * 100;
+
+			for (j = 1; j <= N_CARDS_PER_TYPE; j++)
+			{
+				*(cards + index) = determine_type + j;
+				index++;
+			}
 		}
+		count--;
 	}
+
 }
 
-void swap_cards(int* cards, int size) 
+void randomize_cards(int* cards) 
 {
-	int i;
 	srand(time(NULL));
+	int i;
 	
-	for (i = 0; i < N_CARDS; i++) 
+	for (i = 0; i < N_TOTAL_CARDS; i++)
 	{
-		int rand_index = rand() % (N_CARDS - i) + i;
+		int rand_index = rand() % (N_TOTAL_CARDS - i) + i;
 		swap(cards + i, cards + rand_index);
 	}
 }
@@ -72,13 +93,14 @@ void print_array(int* arr, int size)
 
 	for (i = 0; i < size; i++)
 	{
-		printf("%d\n", *(arr + i));
+		printf("%d ", *(arr + i));
 	}
+	printf("\n");
 }
 
 char* get_card_type(int value)
 {
-	char card_name[MAXLENGTH] = "";
+	char card_name[MINLENGTH] = "";
 	define_card_type(card_name, value, value % 100);
 
 	return card_name;
@@ -113,25 +135,25 @@ void define_card_type(char* card_name, int value)
 	{
 		if (num == 11) 
 		{
-			char temp[] = "J";
+			char temp[] = "J ";
 			strcat(card_name, temp);
 		}
 		else if (num == 12) 
 		{
-			char temp[] = "Q";
+			char temp[] = "Q ";
 			strcat(card_name, temp);
 		}
 		else if (num == 13) 
 		{
-			char temp[] = "K";
+			char temp[] = "K ";
 			strcat(card_name, temp);
 		}
 	}
 	else // 10보다 작을 경우
 	{
 		// 1부터 10까지 임의의 값을 문자열로 만듦
-		char temp[3];
-		sprintf(temp, "%d", num);
+		char temp[4];
+		sprintf(temp, "%d ", num);
 		strcat(card_name, temp);
 	}
 }
