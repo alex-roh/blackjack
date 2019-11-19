@@ -9,6 +9,7 @@
 #define N_MAXPLAYERS 5
 #define N_MINBET 15
 #define N_MAXBET 25
+#define GAMEEND 100
 
 // 플레이어들의 고유 번호
 #define PLAYER 1

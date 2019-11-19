@@ -8,7 +8,8 @@ int cards_tray[N_TOTAL_CARDS];   // 섞인 카드들이 담긴 트레이
 int distribution_cursor;         // (트레이의 마지막 원소가 있는 인덱스 + 1)를 가리키는 커서
 
 // Source.c
-void print_array(int* arr, int size);
+int check_if_game_end();
+int get_winner();
 
 // initialize_cards.c
 void initialize_cards(int* cards);
@@ -16,7 +17,8 @@ void randomize_cards(int* cards);
 void swap(int* x_ptr, int* y_ptr);
 
 // initialize_player.c
-void set_players(int* player_number);
+void set_players();
+void initialize_players_after_round();
 
 // cards_to_string.c
 void cards_to_string(int* player_cards, char* player_cards_string, int size, int dealer_flag);

@@ -8,8 +8,6 @@
 #include "Constants.h"
 #include "Players.h"
 
-void print_array(int* arr, int size);
-
 void game_logic_per_round()
 {
 	static int round = 1;
@@ -252,7 +250,7 @@ void set_players_bet(int* players_bet)
 		if (i == USER)
 		{
 			printf("\n  --> %s의 베팅 금액:      %d (보유 금액: %d)\n",
-				players[i].name, *(players_bet + i), players[i].dollars - *(players_bet + i));
+				players[i].name, *(players_bet + i), players[i].dollars);
 			continue;
 		}
 
@@ -266,7 +264,7 @@ void set_players_bet(int* players_bet)
 		}
 
 		printf("  --> %s의 베팅 금액: %d (보유 금액: %d)\n",
-			players[i].name, *(players_bet + i), players[i].dollars - *(players_bet + i));
+			players[i].name, *(players_bet + i), players[i].dollars);
 	}
 }
 
@@ -319,23 +317,37 @@ void end_round(int is_blackjack, int* players_bet)
 
 		for (int i = 0; i < player_number; i++)
 		{
-			// 총합이 21을 넘어간 경우 무조건 패배
+			// 1. 플레이어의 카드 총합이 21을 넘어간 경우 무조건 패배
 			if (players[i].is_alive == 0)
 			{
-				// 베팅한 금액을 잃음
 				players[i].dollars -= *(players_bet + i);
+				continue;
 			}
-			// 총합이 21을 넘지 않으면서 딜러보다 총합이 같거나 큰 경우 승리
-			else if (players[i].is_alive == 1 && players[i].sum >= dealer.sum)
+
+			// 2. 딜러의 카드 총합이 21을 넘은 경우 무조건 승리
+			if (dealer.sum > 21)
 			{
-				// 베팅한 금액을 얻음
 				players[i].dollars += *(players_bet + i);
+				continue;
 			}
-			// 총합이 21을 넘지 않으면서 딜러가 21을 넘은 경우 승리
-			else if (players[i].is_alive == 1 && dealer.sum > 21)
+			// 3. 딜러가 21을 넘기지 않은 경우
+			else
 			{
-				// 베팅한 금액을 얻음
+				// 딜러가 21을 넘기지 않았고 딜러보다 카드 합이 적은 경우 패배
+				if (players[i].sum < dealer.sum)
+				{
+					// 베팅한 금액을 잃음
+					players[i].dollars -= *(players_bet + i);
+					players[i].is_alive = 0;
+					continue;
+				}
+			}
+
+			// 4. 딜러보다 총합이 같거나 크면 승리
+			if (players[i].sum >= dealer.sum)
+			{
 				players[i].dollars += *(players_bet + i);
+				continue;
 			}
 		}
 	}
