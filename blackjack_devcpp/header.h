@@ -19,8 +19,7 @@ void randomize_cards(int* cards);
 void swap(int* x_ptr, int* y_ptr);
 
 // initialize_player.c
-void set_players();
-void initialize_players_after_round();
+void set_players(int round_or_set);
 
 // cards_to_string.c
 void cards_to_string(int* player_cards, char* player_cards_string, int size, int dealer_flag);

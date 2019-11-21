@@ -58,7 +58,8 @@ void game_logic_per_round()
 	printf("--------------------------\n");
 
 	end_round(result, players_bet);
-
+	
+	// 라운드 결과를 출력 
 	int j;
 	for (j = 0; j < player_number; j++)
 	{

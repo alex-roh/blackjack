@@ -8,7 +8,7 @@
 
 int main(int argc, char *argv[]) {
 
-	set_players();
+	set_players(SET);
 	initialize_cards(cards_tray);
 
 	// 라운드 반복 루프
@@ -16,7 +16,7 @@ int main(int argc, char *argv[]) {
 	{
 		// 게임의 메인 로직
 		game_logic_per_round();
-		initialize_players_after_round();
+		set_players(ROUND);
 
 		// 게임이 종료조건에 부합하게 된 경우
 		if (check_if_game_end() == GAMEEND)
